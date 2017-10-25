@@ -1,0 +1,24 @@
+<html xmlns:th="http://www.thymeleaf.org" >
+<head th:fragment="head">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width"/>
+
+    <title>My Recipes</title>
+
+    <link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'/>
+    <link rel="stylesheet" href="../css/unsemantic-grid-responsive.css"/>
+    <link rel="stylesheet" href="../css/styles.css"/>
+</head>
+<nav th:fragment="nav">
+    <a sec:authentication="name" href="profile.html">
+    </a>
+    &bull;
+    <a href="login.html">
+        logout
+    </a>
+</nav>
+
+<div th:fragment="flash">
+
+</div>
+</html>

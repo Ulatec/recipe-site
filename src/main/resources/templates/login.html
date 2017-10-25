@@ -1,0 +1,56 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head">
+</head>
+
+<body>
+
+  <nav>
+    <a href="signup.html">
+      sign-up
+    </a>
+    &bull;
+    <a href="login.html">
+      login
+    </a>
+  </nav>
+
+  <div class="grid-container">
+
+    <div class="grid-100">
+      <a href="index.html">
+        <h1>
+          <img src="../images/chefbot.svg" height="60px"/>
+          <br></br>
+          My Recipes
+        </h1>
+      </a>
+    </div>
+
+    <div class="grid-100">
+      <div class="recipes">
+        <div class="prefix-20 grid-60 suffix-20">
+          <form th:action="@{/login}" th:object="${user}" method="post">
+            <p>
+              <input th:field="*{username}" placeholder="Username"> </input>
+            </p>
+        <div class="clear"></div>
+          <div class="prefix-20 grid-60 suffix-20">
+            <p>
+              <input th:field="*{password}" placeholder="Password" type="password"> </input>
+            </p>
+          </div> <div class="clear"></div>
+          <div class="prefix-20 grid-60 suffix-20">
+            <p>
+              <button type="submit">Login</button>
+            </p>
+
+        </div>
+          </form>
+        <div class="clear"></div>
+      </div> <!-- recipes -->
+    </div> <!-- grid-100 -->
+  </div> <!-- grid-container -->
+  </div>
+</body>
+</html>
