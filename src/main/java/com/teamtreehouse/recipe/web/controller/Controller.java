@@ -45,7 +45,7 @@ public class Controller {
             redirectAttributes.addAttribute("recipe", recipe);
             return "/new";
         }
-        recipe.getIngredients().forEach(ingredient -> ingredients.save(ingredient));
+        ingredients.save(recipe.getIngredients());
         recipes.save(recipe);
         return "redirect:/";
     }
@@ -56,7 +56,6 @@ public class Controller {
         model.addAttribute("action", String.format("/edit/%s", id));
         if(recipe != null){
             model.addAttribute("recipe", recipe);
-
         }
         return "edit";
     }
