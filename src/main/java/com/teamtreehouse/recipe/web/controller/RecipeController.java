@@ -16,7 +16,7 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 
 @org.springframework.stereotype.Controller
-public class Controller {
+public class RecipeController {
     @Autowired
     private RecipeRepository recipes;
 
@@ -62,9 +62,9 @@ public class Controller {
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
     public String updateRecipe(@Valid Recipe recipe, BindingResult bindingResult, RedirectAttributes redirectAttributes){
-        System.out.println("updateRecipe()");
+        //System.out.println("updateRecipe()");
         if(bindingResult.hasErrors()){
-            return String.format("redirect:/" , recipe.getId());
+            return String.format("redirect:/edit/%s" , recipe.getId());
         }
         recipes.save(applyFormValues(recipe));
         return "redirect:/";

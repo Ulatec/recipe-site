@@ -11,7 +11,7 @@
 
 </head>
 <nav th:fragment="nav">
-    <a sec:authentication="name" href="profile.html">
+    <a sec:authentication="name" href="@{/profile/${id}}">
     </a>
     &bull;
     <a href="login.html">

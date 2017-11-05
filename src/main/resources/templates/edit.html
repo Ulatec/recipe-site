@@ -142,7 +142,7 @@
                   <label> Quantity </label>
                   </p>
                 </div>
-          <div th:each="ingredient : ${ingredients}" class="ingredient-row">
+          <div th:each="ingredient : ${recipe.ingredients}" class="ingredient-row">
             <div class="prefix-20 grid-30">
               <input type="hidden" th:field="*{ingredients[__${ingredientStat.index}__].id}" th:value="${ingredient.id}"/>
               <p>
