@@ -1,5 +1,8 @@
 $('#addIngredient').on('click', function () {
+<<<<<<< HEAD
     console.log("LOL");
+=======
+>>>>>>> RecipeSite/master
     var ingredientIndex = $(".ingredient-row").length;
 
     var ingredientId = '<input type="hidden" id="ingredients' + ingredientIndex + '.id" ' +
@@ -21,4 +24,8 @@ $('#addIngredient').on('click', function () {
     ;
 
     $("#addIngredient").before(html);
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> RecipeSite/master

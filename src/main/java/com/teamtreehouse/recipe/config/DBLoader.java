@@ -1,13 +1,17 @@
 package com.teamtreehouse.recipe.config;
 
+import com.teamtreehouse.recipe.model.Ingredient;
 import com.teamtreehouse.recipe.model.Recipe;
 import com.teamtreehouse.recipe.model.User;
+import com.teamtreehouse.recipe.repository.IngredientRepository;
 import com.teamtreehouse.recipe.repository.RecipeRepository;
 import com.teamtreehouse.recipe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
+
+import java.util.*;
 
 @Component
 public class DBLoader implements ApplicationRunner{
@@ -16,10 +20,13 @@ public class DBLoader implements ApplicationRunner{
 
     private final RecipeRepository recipes;
 
+    private final IngredientRepository ingredients;
+
     @Autowired
-    public DBLoader(UserRepository users, RecipeRepository recipes) {
+    public DBLoader(UserRepository users, RecipeRepository recipes, IngredientRepository ingredients) {
         this.users = users;
         this.recipes = recipes;
+        this.ingredients = ingredients;
     }
 
     @Override
@@ -29,6 +36,14 @@ public class DBLoader implements ApplicationRunner{
         recipe.setUser(users.findByUsername("mark"));
         recipe.setCookTime(69);
         recipe.setPrepTime(70);
+        ArrayList<Ingredient> ingredientList = new ArrayList<>();
+        Ingredient ingredient = new Ingredient("test Ingredient");
+        ingredient.setCondition("Idk");
+        ingredient.setQuantity("5");
+        ingredientList.add(ingredient);
+        ingredients.save(ingredientList);
+        recipe.setIngredients(ingredientList);
+
         recipes.save(recipe);
     }
 }
