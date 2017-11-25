@@ -16,6 +16,7 @@ public class Ingredient extends SharedEntityClass{
 
 
     public Ingredient(){
+        super();
     };
 
     public Ingredient(String name) {

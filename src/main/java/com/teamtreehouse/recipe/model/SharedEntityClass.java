@@ -1,18 +1,16 @@
 package com.teamtreehouse.recipe.model;
 
 import javax.annotation.Generated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 
 @MappedSuperclass
-public class SharedEntityClass {
+public abstract class SharedEntityClass {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    public SharedEntityClass(){
+    @Version
+    private Long version;
+    protected SharedEntityClass(){
         id = null;
     }
 

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Recipe {
+public class Recipe extends SharedEntityClass{
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
@@ -14,7 +14,7 @@ public class Recipe {
     private int cookTime;
     private int prepTime;
     private Category category;
-    @OneToMany
+    @OneToMany(cascade=CascadeType.MERGE)
     private List<Ingredient> ingredients = new ArrayList<>();
     @ManyToOne
     private User user;
@@ -27,7 +27,7 @@ public class Recipe {
         return id;
     }
 
-    public Recipe(){};
+    public Recipe(){ super();};
 
 
     public Recipe(String name, String description) {
@@ -96,4 +96,33 @@ public class Recipe {
         ingredients.add(ingredient);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Recipe recipe = (Recipe) o;
+
+        if (cookTime != recipe.cookTime) return false;
+        if (prepTime != recipe.prepTime) return false;
+        if (id != null ? !id.equals(recipe.id) : recipe.id != null) return false;
+        if (name != null ? !name.equals(recipe.name) : recipe.name != null) return false;
+        if (description != null ? !description.equals(recipe.description) : recipe.description != null) return false;
+        if (category != recipe.category) return false;
+        if (ingredients != null ? !ingredients.equals(recipe.ingredients) : recipe.ingredients != null) return false;
+        return user != null ? user.equals(recipe.user) : recipe.user == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + cookTime;
+        result = 31 * result + prepTime;
+        result = 31 * result + (category != null ? category.hashCode() : 0);
+        result = 31 * result + (ingredients != null ? ingredients.hashCode() : 0);
+        result = 31 * result + (user != null ? user.hashCode() : 0);
+        return result;
+    }
 }

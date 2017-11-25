@@ -11,7 +11,7 @@
   <div class="grid-container">
 
     <div class="grid-100">
-      <a href="index.html">
+      <a th:href="@{/}">
         <h1>
           <img src="../images/chefbot.svg" height="60px"/>
           <br></br>
@@ -49,7 +49,7 @@
             <div class="grid-70">
               <p>
                 <span><img src="../images/favorite.svg" height="12px"/> </span>
-                <span th:text="${recipe.name}"></span>
+                <a th:href="@{|/detail/${recipe.id}|}"><span th:text="${recipe.name}"></span></a>
               </p>
             </div>
           </a>
@@ -58,7 +58,7 @@
               <div class="flush-right">
                 <p>
                   <a th:href="@{/edit/{recipeId}(recipeId=${recipe.id})}"> <img src="../images/edit.svg" height="12px"/> Edit </a>
-                  <a href="#"> <img src="../images/delete.svg" height="12px"/> Delete </a>
+                  <a th:href="@{/delete/{recipeId}(recipeId=${recipe.id})}"> <img src="../images/delete.svg" height="12px"/> Delete </a>
                 </p>
               </div>
             </div>

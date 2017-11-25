@@ -26,51 +26,54 @@
 
         <div class="grid-100 row controls">
           <div class="grid-100">
-            <h2> Chandra S. </h2>
+            <h2 th:text="${username}"> Chandra S. </h2>
           </div>
         </div> <div class="clear"></div>
 
-        <div class="grid-100 row addHover">
-          <a href="detail.html">
-            <div class="grid-70">
-              <p>
-                <span><img src="../images/favorited.svg" height="12px"/> </span>
-                Broiche French Toast with Nutella
-              </p>
-            </div>
-          </a>
-          <div class="hoverBlock">
-            <div class="grid-30">
-              <div class="flush-right">
+        <div th:each="recipe : ${recipes}">
+          <div class="grid-100 row addHover">
+            <a href="detail.html">
+              <div class="grid-70">
                 <p>
-                  <a href="#"> <img src="../images/edit.svg" height="12px"/> Edit </a>
-                  <a href="#"> <img src="../images/delete.svg" height="12px"/> Delete </a>
+                  <span ><img src="../images/favorited.svg" height="12px"/> </span>
+                  <span th:text="${recipe.name}"></span>
                 </p>
               </div>
+            </a>
+            <div class="hoverBlock">
+              <div class="grid-30">
+                <div class="flush-right">
+                  <p>
+                    <a href="#"> <img src="../images/edit.svg" height="12px"/> Edit </a>
+                    <a href="#"> <img src="../images/delete.svg" height="12px"/> Delete </a>
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
-        </div> <div class="clear"></div>
+          </div> <div class="clear"></div>
+        </div>
 
-        <div class="grid-100 row addHover">
-          <a href="detail.html">
-            <div class="grid-70">
-              <p>
-                <span><img src="../images/favorited.svg" height="12px"/> </span>
-                Meyer Lemon French Toast
-              </p>
-            </div>
-          </a>
-          <div class="hoverBlock">
-            <div class="grid-30">
-              <div class="flush-right">
-                <p>
-                  <a href="#"> <img src="../images/edit.svg" height="12px"/> Edit </a>
-                  <a href="#"> <img src="../images/delete.svg" height="12px"/> Delete </a>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div> <div class="clear"></div>
+
+        <!--<div class="grid-100 row addHover">-->
+          <!--<a href="detail.html">-->
+            <!--<div class="grid-70">-->
+              <!--<p>-->
+                <!--<span><img src="../images/favorited.svg" height="12px"/> </span>-->
+                <!--Meyer Lemon French Toast-->
+              <!--</p>-->
+            <!--</div>-->
+          <!--</a>-->
+          <!--<div class="hoverBlock">-->
+            <!--<div class="grid-30">-->
+              <!--<div class="flush-right">-->
+                <!--<p>-->
+                  <!--<a href="#"> <img src="../images/edit.svg" height="12px"/> Edit </a>-->
+                  <!--<a href="#"> <img src="../images/delete.svg" height="12px"/> Delete </a>-->
+                <!--</p>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div> <div class="clear"></div>-->
 
         <div class="row">&nbsp;</div>
 

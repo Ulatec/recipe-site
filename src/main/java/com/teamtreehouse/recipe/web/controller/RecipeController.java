@@ -2,9 +2,14 @@ package com.teamtreehouse.recipe.web.controller;
 
 import com.teamtreehouse.recipe.model.Ingredient;
 import com.teamtreehouse.recipe.model.Recipe;
+import com.teamtreehouse.recipe.model.User;
 import com.teamtreehouse.recipe.repository.IngredientRepository;
 import com.teamtreehouse.recipe.repository.RecipeRepository;
+import com.teamtreehouse.recipe.repository.UserRepository;
+import com.teamtreehouse.recipe.service.IngredientService;
+import com.teamtreehouse.recipe.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,10 +23,13 @@ import java.util.ArrayList;
 @org.springframework.stereotype.Controller
 public class RecipeController {
     @Autowired
-    private RecipeRepository recipes;
+    private RecipeService recipes;
 
     @Autowired
-    private IngredientRepository ingredients;
+    private UserRepository users;
+
+    @Autowired
+    private IngredientService ingredients;
 
     @RequestMapping("/")
     public String index(Model model){
@@ -67,6 +75,11 @@ public class RecipeController {
             return String.format("redirect:/edit/%s" , recipe.getId());
         }
         recipes.save(applyFormValues(recipe));
+        return "redirect:/";
+    }
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+    public String deleteRecipe(@PathVariable Long id, Model model){
+        recipes.delete(id);
         return "redirect:/";
     }
 
