@@ -24,4 +24,22 @@ $('#addIngredient').on('click', function () {
     $("#addIngredient").before(html);
 });
 
+$('#addInstruction').on('click', function () {
+    var instructionIndex = $(".step-row").length;
+
+    var instructionId = '<input type="hidden" id="instructions' + instructionIndex + '.id" ' +
+        'name="instructions[' + instructionIndex + '].id"/>'
+    ;
+
+    var instructionDesc = '<input type="text" id="instructions' + instructionIndex +
+        '.description" name="instructions[' + instructionIndex + '].description"/>'
+    ;
+
+    var html = '<div class="step-row"><div class="prefix-20 grid-80">' + instructionId + '<p>'
+        + instructionDesc + '</p></div></div>'
+    ;
+
+    $("#addInstruction").before(html);
+});
+
 

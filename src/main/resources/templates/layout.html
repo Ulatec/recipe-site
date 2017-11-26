@@ -14,7 +14,7 @@
     <a sec:authentication="name" th:href="@{/profile/}">
     </a>
     &bull;
-    <a href="login.html">
+    <a sec:authorize="isAuthenticated()" th:href="@{/logout}">
         logout
     </a>
 </nav>

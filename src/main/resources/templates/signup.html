@@ -20,7 +20,7 @@
     <div class="grid-100">
       <a href="index.html">
         <h1>
-          <img src="../images/chefbot.svg" height="60px"/>
+          <img src="../assets/images/chefbot.svg" height="60px"/>
           <br></br>
           My Recipes
         </h1>
@@ -32,18 +32,18 @@
         <div class="recipes">
           <div class="prefix-20 grid-60 suffix-20">
             <p>
-              <input th:field="${username}" placeholder="Username"> </input>
+              <input th:field="*{username}" placeholder="Username"> </input>
             </p>
           </div> <div class="clear"></div>
           <div class="prefix-20 grid-60 suffix-20">
             <p>
-              <input th:field="${password}" placeholder="Password" type="password"> </input>
+              <input th:field="*{password}" placeholder="Password" type="password"> </input>
             </p>
           </div> <div class="clear"></div>
           <div class="prefix-20 grid-60 suffix-20">
-            <p>
-              <input th:field="${repeatedPassword}" placeholder="Password Again" type="password"> </input>
-            </p>
+            <!--<p>-->
+              <!--<input th:field="*{repeatedPassword}" placeholder="Password Again" type="password"> </input>-->
+            <!--</p>-->
           </div> <div class="clear"></div>
           <div class="prefix-20 grid-60 suffix-20">
             <p>

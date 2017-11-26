@@ -1,6 +1,9 @@
 package com.teamtreehouse.recipe.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +12,8 @@ public class Recipe extends SharedEntityClass{
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
+    @NotNull
+    @Size(min = 3)
     private String name;
     private String description;
     private int cookTime;
@@ -16,6 +21,9 @@ public class Recipe extends SharedEntityClass{
     private Category category;
     @OneToMany(cascade=CascadeType.MERGE)
     private List<Ingredient> ingredients = new ArrayList<>();
+    @OneToMany(cascade=CascadeType.MERGE)
+    private List<Instruction> instructions = new ArrayList<>();
+
     @ManyToOne
     private User user;
 
@@ -94,6 +102,18 @@ public class Recipe extends SharedEntityClass{
 
     public void addIngredient(Ingredient ingredient){
         ingredients.add(ingredient);
+    }
+
+    public List<Instruction> getInstructions() {
+        return instructions;
+    }
+
+    public void setInstructions(List<Instruction> instructions) {
+        this.instructions = instructions;
+    }
+
+    public void addInstructions(Instruction instruction) {
+        this.instructions.add(instruction);
     }
 
     @Override

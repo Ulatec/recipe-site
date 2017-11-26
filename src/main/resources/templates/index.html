@@ -13,7 +13,7 @@
     <div class="grid-100">
       <a th:href="@{/}">
         <h1>
-          <img src="../images/chefbot.svg" height="60px"/>
+          <img src="../assets/images/chefbot.svg" height="60px"/>
           <br></br>
           My Recipes
         </h1>
@@ -48,7 +48,7 @@
           <a href="detail.html">
             <div class="grid-70">
               <p>
-                <span><img src="../images/favorite.svg" height="12px"/> </span>
+                <span><img src="../assets/images/favorite.svg" height="12px"/> </span>
                 <a th:href="@{|/detail/${recipe.id}|}"><span th:text="${recipe.name}"></span></a>
               </p>
             </div>
@@ -57,8 +57,8 @@
             <div class="grid-30">
               <div class="flush-right">
                 <p>
-                  <a th:href="@{/edit/{recipeId}(recipeId=${recipe.id})}"> <img src="../images/edit.svg" height="12px"/> Edit </a>
-                  <a th:href="@{/delete/{recipeId}(recipeId=${recipe.id})}"> <img src="../images/delete.svg" height="12px"/> Delete </a>
+                  <a th:href="@{/edit/{recipeId}(recipeId=${recipe.id})}"> <img src="../assets/images/edit.svg" height="12px"/> Edit </a>
+                  <a th:href="@{/delete/{recipeId}(recipeId=${recipe.id})}"> <img src="../assets/images/delete.svg" height="12px"/> Delete </a>
                 </p>
               </div>
             </div>

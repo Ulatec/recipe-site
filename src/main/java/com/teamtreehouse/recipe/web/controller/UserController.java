@@ -53,7 +53,7 @@ public class UserController {
 
             return "redirect:/signup";
         }
-
+        user.setRoles(new String[] {"ROLE_USER"});
         users.save(user);
         return "/login";
     }

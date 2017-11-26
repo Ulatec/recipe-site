@@ -1,9 +1,11 @@
 package com.teamtreehouse.recipe.config;
 
 import com.teamtreehouse.recipe.model.Ingredient;
+import com.teamtreehouse.recipe.model.Instruction;
 import com.teamtreehouse.recipe.model.Recipe;
 import com.teamtreehouse.recipe.model.User;
 import com.teamtreehouse.recipe.repository.IngredientRepository;
+import com.teamtreehouse.recipe.repository.InstructionRepository;
 import com.teamtreehouse.recipe.repository.RecipeRepository;
 import com.teamtreehouse.recipe.repository.UserRepository;
 import com.teamtreehouse.recipe.service.RecipeService;
@@ -24,11 +26,14 @@ public class DBLoader implements ApplicationRunner{
 
     private final IngredientRepository ingredients;
 
+    private final InstructionRepository instructions;
+
     @Autowired
-    public DBLoader(UserRepository users, RecipeRepository recipes, IngredientRepository ingredients) {
+    public DBLoader(UserRepository users, RecipeRepository recipes, IngredientRepository ingredients, InstructionRepository instructions) {
         this.users = users;
         this.recipes = recipes;
         this.ingredients = ingredients;
+        this.instructions = instructions;
     }
 
     @Override
@@ -45,8 +50,11 @@ public class DBLoader implements ApplicationRunner{
         ingredient.setQuantity("5");
         ingredientList.add(ingredient);
         ingredients.save(ingredientList);
+        ArrayList<Instruction> instructionList = new ArrayList<>();
+        instructionList.add(new Instruction("test Instruction"));
+        recipe.setInstructions(instructionList);
+        instructions.save(instructionList);
         recipe.setIngredients(ingredientList);
-
         recipes.save(recipe);
     }
 }
