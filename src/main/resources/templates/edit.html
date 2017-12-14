@@ -12,7 +12,7 @@
   <div class="grid-container">
 
     <div class="grid-100">
-      <a href="index.html">
+      <a th:href="@{/}">
         <h1>
           <img src="../assets/images/chefbot.svg" height="60px"/>
           <br></br>
@@ -45,7 +45,7 @@
           </div>
           <div class="grid-40">
             <p>
-              <input placeholder="Url"/>
+              <input th:field="*{url}"/>
             </p>
           </div>
         </div> <div class="clear"></div>
@@ -85,7 +85,7 @@
           <div class="grid-30">
             <p>
               <select th:field="*{category}" >
-                <option th:each="category : ${categories}" th:value="${category.name}" th:text="${category.name}">All Categories</option>
+                <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}">All Categories</option>
               </select>
             </p>
           </div>

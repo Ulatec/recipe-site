@@ -6,6 +6,8 @@ import com.teamtreehouse.recipe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -30,5 +32,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findOne(Long id) {
         return null;
+    }
+
+    @Override
+    public List<User> findAll(){
+        return (List<User>) users.findAll();
     }
 }

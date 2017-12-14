@@ -20,6 +20,6 @@
 </nav>
 
 <div th:fragment="flash">
-
+    <div th:classappend="${#strings.toLowerCase(flash.status)}" th:text="${flash.message}" class="flash"></div>
 </div>
 </html>

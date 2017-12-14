@@ -3,12 +3,11 @@ package com.teamtreehouse.recipe.model;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class User {
@@ -21,6 +20,8 @@ public class User {
     private String username;
     private String password;
     private String[] roles;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Recipe> favorites;
 
 
     public User(){
@@ -31,6 +32,7 @@ public class User {
         this.username = username;
         setPassword(password);
         this.roles = roles;
+        favorites = new ArrayList<>();
     }
 
     public Long getId() {
@@ -65,4 +67,18 @@ public class User {
         this.roles = roles;
     }
 
+    public List<Recipe> getFavorites() {
+        return favorites;
+    }
+
+    public void setFavorites(List<Recipe> favorites) {
+        this.favorites = favorites;
+    }
+
+    public void addFavorite(Recipe favorite){
+        favorites.add(favorite);
+    }
+    public void removeFavorite(Recipe favorite){
+        favorites.remove(favorite);
+    }
 }

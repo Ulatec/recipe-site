@@ -8,8 +8,7 @@ public abstract class SharedEntityClass {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Version
-    private Long version;
+
     protected SharedEntityClass(){
         id = null;
     }

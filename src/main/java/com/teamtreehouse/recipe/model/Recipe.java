@@ -15,9 +15,11 @@ public class Recipe extends SharedEntityClass{
     @NotNull
     @Size(min = 3)
     private String name;
+    private String url;
     private String description;
     private int cookTime;
     private int prepTime;
+    @ManyToOne(cascade=CascadeType.MERGE)
     private Category category;
     @OneToMany(cascade=CascadeType.MERGE)
     private List<Ingredient> ingredients = new ArrayList<>();
@@ -115,6 +117,20 @@ public class Recipe extends SharedEntityClass{
     public void addInstructions(Instruction instruction) {
         this.instructions.add(instruction);
     }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+
+    public boolean isFavorite(User user) {
+        return user.getFavorites().contains(this);
+    }
+
 
     @Override
     public boolean equals(Object o) {

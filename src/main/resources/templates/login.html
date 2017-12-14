@@ -28,11 +28,12 @@
 
     <div class="grid-100">
       <div class="recipes">
+        <form th:action="@{/login}" th:object="${user}" method="post">
         <div class="prefix-20 grid-60 suffix-20">
-          <form th:action="@{/login}" th:object="${user}" method="post">
             <p>
               <input th:field="*{username}" placeholder="Username"> </input>
             </p>
+        </div>
         <div class="clear"></div>
           <div class="prefix-20 grid-60 suffix-20">
             <p>
@@ -45,9 +46,10 @@
             </p>
 
         </div>
-          </form>
+
         <div class="clear"></div>
-      </div> <!-- recipes -->
+       <!-- recipes -->
+        </form>
     </div> <!-- grid-100 -->
   </div> <!-- grid-container -->
   </div>

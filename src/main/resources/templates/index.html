@@ -48,7 +48,12 @@
           <a href="detail.html">
             <div class="grid-70">
               <p>
-                <span><img src="../assets/images/favorite.svg" height="12px"/> </span>
+                <span>
+                  <form th:action="@{|/favorite/${recipe.id}|}" method="post">
+                    <button style="background: transparent" type="submit">
+                    <img th:src="${recipe.isFavorite(user)} ? @{/assets/images/favorited.svg} : @{/assets/images/favorite.svg}" height="12px"/>
+                    </button>
+                  </form></span>
                 <a th:href="@{|/detail/${recipe.id}|}"><span th:text="${recipe.name}"></span></a>
               </p>
             </div>

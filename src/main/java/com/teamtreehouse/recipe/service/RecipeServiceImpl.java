@@ -13,37 +13,42 @@ import java.util.List;
 @Service
 public class RecipeServiceImpl implements RecipeService {
 
+//    @Autowired
+//    private IngredientRepository ingredients;
     @Autowired
-    private IngredientRepository ingredients;
+    private UserRepository userService;
     @Autowired
-    private UserRepository users;
-    @Autowired
-    private RecipeRepository recipes;
+    private RecipeRepository recipeRepository;
 
     @Override
     public List<Recipe> findByUser(User user) {
-        return null;
+        return recipeRepository.findByUser(user);
+    }
+
+    @Override
+    public Recipe findById(Long id) {
+        return recipeRepository.findOne(id);
     }
 
     @Override
     public List<Recipe> findAll() {
-        return (List<Recipe>) recipes.findAll();
+        return (List<Recipe>) recipeRepository.findAll();
     }
 
     @Override
-    public void delete(Long id) {
-        recipes.delete(id);
+    public void delete(Recipe recipe) {
+
+        List<User> users = (List<User>) userService.findAll();
+        users.forEach( user -> {
+            user.removeFavorite(recipe);
+            userService.save(user);
+        });
+        recipeRepository.delete(recipe);
     }
 
     @Override
     public void save(Recipe recipe) {
-        User user = users.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-        recipe.setUser(user);
-        recipes.save(recipe);
+        recipeRepository.save(recipe);
     }
 
-    @Override
-    public Recipe findOne(Long id) {
-        return recipes.findOne(id);
-    }
 }

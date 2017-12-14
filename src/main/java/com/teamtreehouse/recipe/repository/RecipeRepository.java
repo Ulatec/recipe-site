@@ -13,6 +13,7 @@ import java.util.List;
 @RepositoryRestResource
 public interface RecipeRepository extends CrudRepository<Recipe, Long> {
     List<Recipe> findByUser(User user);
+    Recipe findById(Long id);
     @Override
     @PreAuthorize("@recipeRepository.findOne(#id)?.user?.username == authentication.name")
     void delete(@Param("id") Long id);

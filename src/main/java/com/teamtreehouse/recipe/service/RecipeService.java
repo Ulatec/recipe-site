@@ -10,7 +10,7 @@ import java.util.List;
 public interface RecipeService {
     List<Recipe> findByUser(User user);
     List<Recipe> findAll();
-    void delete(Long id);
+    void delete(Recipe recipe);
     void save (Recipe recipe);
-    Recipe findOne(Long id);
+    Recipe findById(Long id);
 }
