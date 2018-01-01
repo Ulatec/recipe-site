@@ -93,7 +93,12 @@ public class RecipeController {
             }
             return String.format("redirect:/edit/%s" , recipe.getId());
         }
-        recipeService.save(applyFormValues(recipe));
+        Recipe existingRecipe = recipeService.findById(recipe.getId());
+        if(existingRecipe.getUser() != getAuthenticatedUser()){
+            redirectAttributes.addFlashAttribute("flash", new FlashMessage("You are not the owner of this recipe.", FlashMessage.Status.FAILURE));
+            return String.format("redirect:/detail/%d", recipe.getId());
+        }
+        recipeService.save(applyFormValues(recipe, existingRecipe));
         redirectAttributes.addFlashAttribute("flash", new FlashMessage("Recipe updated successfully!", FlashMessage.Status.SUCCESS));
         return String.format("redirect:/detail/%d", recipe.getId());
     }
@@ -177,8 +182,8 @@ public class RecipeController {
 
 
 
-    public Recipe applyFormValues(Recipe newRecipeFromForm){
-        Recipe existingRecipe = recipeService.findById(newRecipeFromForm.getId());
+    public Recipe applyFormValues(Recipe newRecipeFromForm, Recipe existingRecipe){
+
         //Save Ingredients
         newRecipeFromForm.getIngredients().forEach(
                 ingredient -> ingredients.save(ingredient));
