@@ -9,7 +9,7 @@
 </nav>
 
   <div class="grid-container">
-
+    <div th:replace="layout :: flash"></div>
     <div class="grid-100">
       <a th:href="@{/}">
         <h1>
@@ -30,9 +30,11 @@
           </div>
           <div class="grid-50">
             <h2 class="flush-right">
-              <a href="#">
-                <img src="../assets/images/favorite.svg" height="16px"/>
-              </a>
+                <form th:action="@{|/favorite/${recipe.id}|}" method="post">
+                  <button style="background: transparent" type="submit">
+                  <img th:src="${recipe.isFavorite(user)} ? @{/assets/images/favorited.svg} : @{/assets/images/favorite.svg}" height="16px"/>
+                  </button>
+                </form>
             </h2>
           </div>
         </div> <div class="clear"></div>
@@ -44,8 +46,8 @@
             </p>
           </div>
           <div class="grid-40">
-            <p>
-              <img th:src="${recipe.url}"/>
+            <p th:if="${recipe.url} != ''">
+              <img th:src="${recipe.url}" width="500px" height="500px"/>
             </p>
           </div>
         </div> <div class="clear"></div>
@@ -83,8 +85,8 @@
             </p>
           </div>
           <div class="grid-30">
-            <p>
-              Dessert
+            <p th:if="${recipe.category} != null" th:text="${recipe.category.name}">
+              Category
             </p>
           </div>
         </div> <div class="clear"></div>
@@ -96,8 +98,8 @@
             </p>
           </div>
           <div class="grid-20">
-            <p>
-              5 minutes
+            <p th:text="${recipe.prepTime}">
+              prep time
             </p>
           </div>
         </div> <div class="clear"></div>
@@ -110,7 +112,7 @@
           </div>
           <div class="grid-20">
             <p th:text="${recipe.cookTime}">
-              15 minutes
+              cook time
             </p>
           </div>
         </div> <div class="clear"></div>

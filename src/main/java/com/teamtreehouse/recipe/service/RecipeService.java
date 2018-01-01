@@ -13,4 +13,6 @@ public interface RecipeService {
     void delete(Recipe recipe);
     void save (Recipe recipe);
     Recipe findById(Long id);
+    List<Recipe> findByDescriptionContaining(String term);
+    List<Recipe> findByCategoryName(String categoryName);
 }

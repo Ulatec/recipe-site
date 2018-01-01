@@ -10,7 +10,7 @@
 
 
   <div class="grid-container">
-
+    <div th:replace="layout :: flash"></div>
     <div class="grid-100">
       <a th:href="@{/}">
         <h1>
@@ -85,7 +85,8 @@
           <div class="grid-30">
             <p>
               <select th:field="*{category}" >
-                <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}">All Categories</option>
+                <option value="">All Categories</option>
+                <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}">Category</option>
               </select>
             </p>
           </div>

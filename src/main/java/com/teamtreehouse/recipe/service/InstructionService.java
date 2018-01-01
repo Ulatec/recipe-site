@@ -8,6 +8,6 @@ public interface InstructionService {
     List<Instruction> findAll();
     void save(List<Instruction> instructions);
     void save(Instruction instruction);
-    void delete(Long id);
+    void delete(Instruction instruction);
     Instruction findOne(Long id);
 }

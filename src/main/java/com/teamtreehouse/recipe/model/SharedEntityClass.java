@@ -1,6 +1,5 @@
 package com.teamtreehouse.recipe.model;
 
-import javax.annotation.Generated;
 import javax.persistence.*;
 
 @MappedSuperclass

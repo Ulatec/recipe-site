@@ -6,18 +6,20 @@
 <body>
 
   <nav>
-    <a href="signup.html">
+    <a th:href="@{/signup}">
       sign-up
     </a>
     &bull;
-    <a href="login.html">
+    <a th:href="@{/login}">
       login
     </a>
+
   </nav>
 
   <div class="grid-container">
 
     <div class="grid-100">
+      <div th:replace="layout :: flash"></div>
       <a href="index.html">
         <h1>
           <img src="../assets/images/chefbot.svg" height="60px"/>
@@ -41,9 +43,6 @@
             </p>
           </div> <div class="clear"></div>
           <div class="prefix-20 grid-60 suffix-20">
-            <!--<p>-->
-              <!--<input th:field="*{repeatedPassword}" placeholder="Password Again" type="password"> </input>-->
-            <!--</p>-->
           </div> <div class="clear"></div>
           <div class="prefix-20 grid-60 suffix-20">
             <p>

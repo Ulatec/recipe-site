@@ -9,7 +9,7 @@
   </nav>
 
   <div class="grid-container">
-
+    <div th:replace="layout :: flash"></div>
     <div class="grid-100">
       <a th:href="@{/}">
         <h1>
@@ -26,17 +26,20 @@
 
         <div class="grid-100 row controls">
           <div class="grid-30">
-            <select>
+            <form th:action="@{/category}" method="get" style="display:inline">
+            <select name="category" style="width:61%">
               <option value="">All Categories</option>
-              <option value="breakfast">Breakfast</option>
-              <option value="lunch">Lunch</option>
-              <option value="dinner">Dinner</option>
-              <option value="dessert">Dessert</option>
+              <option th:each="category : ${categories}" th:value="${category.name}" th:text="${category.name}">Category</option>
             </select>
+              <button style="display: inline; width: 34%" type="submit">Filter</button>
+            </form>
           </div>
-          <div class="grid-40">
-            <input placeholder="Search"></input>
-          </div>
+          <form th:action="@{/search}" method="get" style="display:inline">
+            <div class="grid-40">
+              <input id="search" name="searchTerm" th:value="${searchTerm}" placeholder="Search"/>
+              <button style="display: inline;" type="submit">Search</button>
+            </div>
+          </form>
           <div class="grid-30">
             <div class="flush-right">
               <a href="/new"><button>+ Add Recipe</button></a>
@@ -44,115 +47,31 @@
           </div>
         </div> <div class="clear"></div>
 
-        <div th:each="recipe : ${recipes}">
+        <div th:each="recipe : ${recipes}" class=" grid-100 row addHover">
           <a href="detail.html">
             <div class="grid-70">
-              <p>
-                <span>
-                  <form th:action="@{|/favorite/${recipe.id}|}" method="post">
+
+
+                  <form th:action="@{|/favorite/${recipe.id}|}" style="display: inline" method="post">
                     <button style="background: transparent" type="submit">
                     <img th:src="${recipe.isFavorite(user)} ? @{/assets/images/favorited.svg} : @{/assets/images/favorite.svg}" height="12px"/>
                     </button>
-                  </form></span>
+                  </form>
                 <a th:href="@{|/detail/${recipe.id}|}"><span th:text="${recipe.name}"></span></a>
-              </p>
+
             </div>
           </a>
           <div class="hoverBlock">
             <div class="grid-30">
               <div class="flush-right">
-                <p>
                   <a th:href="@{/edit/{recipeId}(recipeId=${recipe.id})}"> <img src="../assets/images/edit.svg" height="12px"/> Edit </a>
-                  <a th:href="@{/delete/{recipeId}(recipeId=${recipe.id})}"> <img src="../assets/images/delete.svg" height="12px"/> Delete </a>
-                </p>
+                  <form th:action="@{/delete/{recipeId}(recipeId=${recipe.id})}" style="display: inline" method="post">
+                    <button style="background: transparent; color: #808080"> <img src="../assets/images/delete.svg" height="12px"/> Delete </button>
+                  </form>
               </div>
             </div>
           </div>
         </div>
-
-        <!--<div class="grid-100 row addHover">-->
-          <!--<a href="detail.html">-->
-            <!--<div class="grid-70">-->
-              <!--<p>-->
-                <!--<span><img src="../images/favorite.svg" height="12px"/> </span>-->
-                <!--Baked Alaskan Salmon with Asparagus-->
-              <!--</p>-->
-            <!--</div>-->
-          <!--</a>-->
-          <!--<div class="hoverBlock">-->
-            <!--<div class="grid-30">-->
-              <!--<div class="flush-right">-->
-                <!--<p>-->
-                  <!--<a href="edit"> <img src="../images/edit.svg" height="12px"/> Edit </a>-->
-                  <!--<a href="#"> <img src="../images/delete.svg" height="12px"/> Delete </a>-->
-                <!--</p>-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</div> <div class="clear"></div>-->
-
-        <!--<div class="grid-100 row addHover">-->
-          <!--<a href="detail.html">-->
-            <!--<div class="grid-70">-->
-              <!--<p>-->
-                <!--<span><img src="../images/favorited.svg" height="12px"/> </span>-->
-                <!--Broiche French Toast with Nutella-->
-              <!--</p>-->
-            <!--</div>-->
-          <!--</a>-->
-          <!--<div class="hoverBlock">-->
-            <!--<div class="grid-30">-->
-              <!--<div class="flush-right">-->
-                <!--<p>-->
-                  <!--<a href="#"> <img src="../images/edit.svg" height="12px"/> Edit </a>-->
-                  <!--<a href="#"> <img src="../images/delete.svg" height="12px"/> Delete </a>-->
-                <!--</p>-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</div> <div class="clear"></div>-->
-
-        <!--<div class="grid-100 row addHover">-->
-          <!--<a href="detail.html">-->
-            <!--<div class="grid-70">-->
-              <!--<p>-->
-                <!--<span><img src="../images/favorite.svg" height="12px"/> </span>-->
-                <!--Simple Miso Soup with Clams and Sake-->
-              <!--</p>-->
-            <!--</div>-->
-          <!--</a>-->
-          <!--<div class="hoverBlock">-->
-            <!--<div class="grid-30">-->
-              <!--<div class="flush-right">-->
-                <!--<p>-->
-                  <!--<a href="#"> <img src="../images/edit.svg" height="12px"/> Edit </a>-->
-                  <!--<a href="#"> <img src="../images/delete.svg" height="12px"/> Delete </a>-->
-                <!--</p>-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</div> <div class="clear"></div>-->
-
-        <!--<div class="grid-100 row addHover">-->
-          <!--<a href="detail.html">-->
-            <!--<div class="grid-70">-->
-              <!--<p>-->
-                <!--<span><img src="../images/favorite.svg" height="12px"/> </span>-->
-                <!--Paleo Squash Noodles with Chicken Breast-->
-              <!--</p>-->
-            <!--</div>-->
-          <!--</a>-->
-          <!--<div class="hoverBlock">-->
-            <!--<div class="grid-30">-->
-              <!--<div class="flush-right">-->
-                <!--<p>-->
-                  <!--<a href="#"> <img src="../images/edit.svg" height="12px"/> Edit </a>-->
-                  <!--<a href="#"> <img src="../images/delete.svg" height="12px"/> Delete </a>-->
-                <!--</p>-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</div> <div class="clear"></div>-->
 
         <div class="row">&nbsp;</div>
 

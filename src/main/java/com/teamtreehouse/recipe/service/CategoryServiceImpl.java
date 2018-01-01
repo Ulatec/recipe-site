@@ -27,4 +27,9 @@ public class CategoryServiceImpl implements  CategoryService{
     public List<Category> findAll() {
         return (List<Category>) categoryRepository.findAll();
     }
+
+    @Override
+    public void delete(Category category){
+        categoryRepository.delete(category);
+    }
 }

@@ -5,6 +5,8 @@ import com.teamtreehouse.recipe.model.User;
 import com.teamtreehouse.recipe.repository.IngredientRepository;
 import com.teamtreehouse.recipe.repository.RecipeRepository;
 import com.teamtreehouse.recipe.repository.UserRepository;
+import com.teamtreehouse.recipe.web.exception.CategoryNotFoundException;
+import com.teamtreehouse.recipe.web.exception.SearchTermNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -13,10 +15,8 @@ import java.util.List;
 @Service
 public class RecipeServiceImpl implements RecipeService {
 
-//    @Autowired
-//    private IngredientRepository ingredients;
     @Autowired
-    private UserRepository userService;
+    private UserService userService;
     @Autowired
     private RecipeRepository recipeRepository;
 
@@ -51,4 +51,22 @@ public class RecipeServiceImpl implements RecipeService {
         recipeRepository.save(recipe);
     }
 
+    @Override
+    public List<Recipe> findByDescriptionContaining(String searchTerm) {
+        List<Recipe> recipes = recipeRepository.findByDescriptionContaining(searchTerm);
+        if (recipes.isEmpty()) {
+            throw new SearchTermNotFoundException();
+        } else {
+            return recipes;
+        }
+    }
+    @Override
+    public List<Recipe> findByCategoryName(String categoryName) {
+        List<Recipe> recipes = recipeRepository.findByCategoryName(categoryName);
+        if (recipes.isEmpty()) {
+            throw new CategoryNotFoundException();
+        } else {
+            return recipes;
+        }
+    }
 }

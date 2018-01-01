@@ -94,6 +94,15 @@ button {
 .add-row {
   margin-bottom: 30px; }
 
+.grid-100 .row .addHover {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%
+}
+.grid-100 .row .addHover a {
+  width: 70%;
+}
+
 .addHover .hoverBlock {
   opacity: 0;
   transition: all ease-in-out 0.3s; }
@@ -110,4 +119,25 @@ button {
 /*# sourceMappingURL=styles.css.map */
 #addIngredient {
 
+}
+#search{
+  width: 50%;
+}
+.flash {
+  color: #fff;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.flash.failure {
+  background: #e25656;
+}
+
+.flash.success {
+  background: #4cc38c;
+}
+
+.flash.info {
+  background: #eca73f;
 }

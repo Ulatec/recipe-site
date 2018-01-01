@@ -22,7 +22,7 @@ public class IngredientServiceImpl implements IngredientService{
 
     @Override
     public List<Ingredient> findAll() {
-        return null;
+        return (List<Ingredient>)ingredientsRepository.findAll();
     }
 
     @Override
@@ -31,8 +31,8 @@ public class IngredientServiceImpl implements IngredientService{
     }
 
     @Override
-    public void delete(Long id) {
-
+    public void delete(Ingredient ingredient) {
+        ingredientsRepository.delete(ingredient);
     }
 
     @Override

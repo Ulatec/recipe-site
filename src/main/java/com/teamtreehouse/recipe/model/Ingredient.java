@@ -1,11 +1,8 @@
 package com.teamtreehouse.recipe.model;
 
-import org.springframework.data.annotation.Id;
 
-import javax.persistence.Embeddable;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+
 
 @Entity
 public class Ingredient extends SharedEntityClass{

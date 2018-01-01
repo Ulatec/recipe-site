@@ -1,33 +1,32 @@
 package com.teamtreehouse.recipe.web.controller;
 
 import com.teamtreehouse.recipe.model.*;
-import com.teamtreehouse.recipe.repository.IngredientRepository;
-import com.teamtreehouse.recipe.repository.RecipeRepository;
-import com.teamtreehouse.recipe.repository.UserRepository;
-import com.teamtreehouse.recipe.service.CategoryService;
-import com.teamtreehouse.recipe.service.IngredientService;
-import com.teamtreehouse.recipe.service.InstructionService;
-import com.teamtreehouse.recipe.service.RecipeService;
+import com.teamtreehouse.recipe.service.*;
+import com.teamtreehouse.recipe.web.exception.CategoryNotFoundException;
+import com.teamtreehouse.recipe.web.exception.SearchTermNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.List;
 
-@org.springframework.stereotype.Controller
+@Controller
 public class RecipeController {
     @Autowired
-    private RecipeService recipes;
+    private RecipeService recipeService;
 
     @Autowired
-    private UserRepository users;
+    private UserService users;
 
     @Autowired
     private IngredientService ingredients;
@@ -36,13 +35,14 @@ public class RecipeController {
     private InstructionService instructions;
 
     @Autowired
-    private CategoryService categories;
+    private CategoryService categoryService;
 
     @RequestMapping("/")
     public String index(Model model){
         User user = users.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-        model.addAttribute("recipes", recipes.findAll());
+        model.addAttribute("recipes", recipeService.findAll());
         model.addAttribute("user", user);
+        model.addAttribute("categories", categoryService.findAll());
         return "index";
     }
 
@@ -51,6 +51,7 @@ public class RecipeController {
         if(!model.containsAttribute("recipe")){
             model.addAttribute("recipe", new Recipe() );
         }
+        model.addAttribute("categories", categoryService.findAll());
         model.addAttribute("ingredients", new ArrayList<Ingredient>());
         model.addAttribute("instructions", new ArrayList<Instruction>());
         model.addAttribute("action", "/new");
@@ -60,24 +61,25 @@ public class RecipeController {
     @RequestMapping(value = "/new", method = RequestMethod.POST)
     public String submitNewRecipe(@Valid Recipe recipe, BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if(bindingResult.hasErrors()){
-            redirectAttributes.addAttribute("recipe", recipe);
-            return "/new";
+            redirectAttributes.addFlashAttribute("recipe", recipe);
+            return "redirect:/new";
         }
-        User user = users.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+
+        User user = getAuthenticatedUser();
         recipe.setUser(user);
         instructions.save(recipe.getInstructions());
         ingredients.save(recipe.getIngredients());
-        recipes.save(recipe);
-        return "redirect:/";
+        recipeService.save(recipe);
+        return String.format("redirect:/detail/%d", recipe.getId());
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String edit(@PathVariable Long id, Model model){
-        Recipe recipe = recipes.findById(id);
+        Recipe recipe = recipeService.findById(id);
         model.addAttribute("action", String.format("/edit/%s", id));
         if(recipe != null){
             model.addAttribute("recipe", recipe);
-            model.addAttribute("categories", categories.findAll());
+            model.addAttribute("categories", categoryService.findAll());
         }
         return "edit";
     }
@@ -91,45 +93,92 @@ public class RecipeController {
             }
             return String.format("redirect:/edit/%s" , recipe.getId());
         }
-        recipes.save(applyFormValues(recipe));
-        return "redirect:/";
+        recipeService.save(applyFormValues(recipe));
+        redirectAttributes.addFlashAttribute("flash", new FlashMessage("Recipe updated successfully!", FlashMessage.Status.SUCCESS));
+        return String.format("redirect:/detail/%d", recipe.getId());
+    }
+
+    @RequestMapping("/search")
+    public String searchRecipes(@RequestParam String searchTerm, Model model) {
+        List<Category> categories = categoryService.findAll();
+        List<Recipe> recipes;
+        if (searchTerm.equals("")) {
+            recipes = recipeService.findAll();
+        } else {
+            recipes = recipeService.findByDescriptionContaining(searchTerm);
+        }
+        model.addAttribute("categories", categories);
+        model.addAttribute("recipes", recipes);
+        model.addAttribute("action", "/search");
+        model.addAttribute("searchTerm", searchTerm);
+        model.addAttribute("user", getAuthenticatedUser());
+
+        return "index";
+    }
+
+    @RequestMapping("/category")
+    public String category(@RequestParam String category, Model model) {
+        List<Category> categories = categoryService.findAll();
+        List<Recipe> recipes;
+        if (category.equals("")) {
+            recipes = recipeService.findAll();
+        } else {
+            recipes = recipeService.findByCategoryName(category);
+        }
+        model.addAttribute("categories", categories);
+        model.addAttribute("recipes", recipes);
+        model.addAttribute("action", "/category");
+        model.addAttribute("user", getAuthenticatedUser());
+
+        return "index";
     }
 
     @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
     public String recipeDetails(@PathVariable Long id, Model model){
-        Recipe recipe = recipes.findById(id);
+        Recipe recipe = recipeService.findById(id);
         if(recipe != null){
             model.addAttribute("recipe", recipe);
+            model.addAttribute("user", getAuthenticatedUser());
         }
 
         return "detail";
     }
 
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-    public String deleteRecipe(@PathVariable Long id, Model model){
-        Recipe recipe = recipes.findById(id);
-        recipes.delete(recipe);
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
+    public String deleteRecipe(@PathVariable Long id, RedirectAttributes redirectAttributes){
+        Recipe recipe = recipeService.findById(id);
+        if(recipe.getUser() != getAuthenticatedUser()){
+            redirectAttributes.addFlashAttribute("flash", new FlashMessage("You are not the owner of that recipe.", FlashMessage.Status.FAILURE));
+            return "redirect:/";
+        }
+        User user = recipe.getUser();
+        user.removeFavorite(recipe);
+        recipeService.delete(recipe);
+        redirectAttributes.addFlashAttribute("flash", new FlashMessage("Recipe successfully deleted!", FlashMessage.Status.SUCCESS));
         return "redirect:/";
+
     }
 
     @RequestMapping(value = "/favorite/{id}", method = RequestMethod.POST)
-    public String toggleFavorite(@PathVariable Long id, Model model){
+    public String toggleFavorite(@PathVariable Long id,  RedirectAttributes redirectAttributes, HttpServletRequest request){
         User user = users.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-        Recipe recipe = recipes.findById(id);
+        Recipe recipe = recipeService.findById(id);
         if(user.getFavorites().contains(recipe)){
             user.removeFavorite(recipe);
             users.save(user);
+            redirectAttributes.addFlashAttribute("flash", new FlashMessage("Favorite successfully removed!", FlashMessage.Status.SUCCESS));
         }else{
             user.addFavorite(recipe);
             users.save(user);
+            redirectAttributes.addFlashAttribute("flash", new FlashMessage("Favorite successfully added!", FlashMessage.Status.SUCCESS));
         }
-        return "redirect:/";
+        return String.format("redirect:%s", request.getHeader("referer"));
     }
 
 
 
     public Recipe applyFormValues(Recipe newRecipeFromForm){
-        Recipe existingRecipe = recipes.findById(newRecipeFromForm.getId());
+        Recipe existingRecipe = recipeService.findById(newRecipeFromForm.getId());
         //Save Ingredients
         newRecipeFromForm.getIngredients().forEach(
                 ingredient -> ingredients.save(ingredient));
@@ -153,6 +202,32 @@ public class RecipeController {
         //Set PrepTime
         existingRecipe.setPrepTime(newRecipeFromForm.getPrepTime());
         return existingRecipe;
+    }
+
+    public User getAuthenticatedUser() {
+        if(SecurityContextHolder.getContext().getAuthentication() != null){
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            return users.findByUsername(username);
+        } else{
+            throw new AccessDeniedException("Please sign in.");
+        }
+    }
+    @ExceptionHandler(value = AccessDeniedException.class)
+    public String accessDeniedHandler(HttpServletRequest request, AccessDeniedException ex) {
+        return "redirect:/login";
+    }
+
+    @ExceptionHandler(SearchTermNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String searchTermNotFound(Model model, Exception ex) {
+        model.addAttribute("errorMessage", ex.getMessage());
+        return "error";
+    }
+    @ExceptionHandler(CategoryNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String noCategoriesFound(Model model, Exception ex) {
+        model.addAttribute("errorMessage", ex.getMessage());
+        return "error";
     }
 
 }

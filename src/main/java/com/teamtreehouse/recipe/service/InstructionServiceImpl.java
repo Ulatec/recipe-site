@@ -29,8 +29,8 @@ public class InstructionServiceImpl implements InstructionService {
     }
 
     @Override
-    public void delete(Long id) {
-        instructionsRepository.delete(id);
+    public void delete(Instruction instruction) {
+        instructionsRepository.delete(instruction);
     }
 
     @Override

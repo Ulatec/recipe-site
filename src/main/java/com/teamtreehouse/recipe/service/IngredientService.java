@@ -10,7 +10,7 @@ public interface IngredientService {
     List<Ingredient> findByUser(User user);
     List<Ingredient> findAll();
     void save (List<Ingredient> ingredients);
-    void delete(Long id);
+    void delete(Ingredient ingredient);
     void save (Ingredient ingredient);
     Ingredient findOne(Long id);
 }

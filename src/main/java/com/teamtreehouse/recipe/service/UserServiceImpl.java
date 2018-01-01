@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(Long id) {
-
+        users.delete(id);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findOne(Long id) {
-        return null;
+        return users.findOne(id);
     }
 
     @Override

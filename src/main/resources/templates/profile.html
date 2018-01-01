@@ -11,7 +11,7 @@
   <div class="grid-container">
 
     <div class="grid-100">
-      <a href="index.html">
+      <a th:href="@{/}">
         <h1>
           <img src="../assets/images/chefbot.svg" height="60px"/>
           <br></br>
@@ -26,7 +26,7 @@
 
         <div class="grid-100 row controls">
           <div class="grid-100">
-            <h2 th:text="${username}"> Chandra S. </h2>
+            <h2 th:text="${username}"> username </h2>
           </div>
         </div> <div class="clear"></div>
 
@@ -35,7 +35,7 @@
             <a href="detail.html">
               <div class="grid-70">
                 <p>
-                  <span ><img src="../assets/images/favorited.svg" height="12px"/> </span>
+                  <span ><img th:src="${recipe.isFavorite(user)} ? @{/assets/images/favorited.svg} : @{/assets/images/favorite.svg}" height="12px"/></span>
                   <span th:text="${recipe.name}"></span>
                 </p>
               </div>
@@ -43,37 +43,16 @@
             <div class="hoverBlock">
               <div class="grid-30">
                 <div class="flush-right">
-                  <p>
-                    <a href="#"> <img src="../assets/images/edit.svg" height="12px"/> Edit </a>
-                    <a href="#"> <img src="../assets/images/delete.svg" height="12px"/> Delete </a>
-                  </p>
+                    <a th:href="@{|/edit/${recipe.id}|}"> <img src="../assets/images/edit.svg" height="12px"/> Edit </a>
+                  <form style="display: inline" th:action="@{|/delete/${recipe.id}|}" method="post">
+                    <button style="background: transparent; color: #808080;" type="submit">
+                      <img th:src="@{/assets/images/delete.svg}" height="12px"/> Delete </button>
+                  </form>
                 </div>
               </div>
             </div>
           </div> <div class="clear"></div>
         </div>
-
-
-        <!--<div class="grid-100 row addHover">-->
-          <!--<a href="detail.html">-->
-            <!--<div class="grid-70">-->
-              <!--<p>-->
-                <!--<span><img src="../images/favorited.svg" height="12px"/> </span>-->
-                <!--Meyer Lemon French Toast-->
-              <!--</p>-->
-            <!--</div>-->
-          <!--</a>-->
-          <!--<div class="hoverBlock">-->
-            <!--<div class="grid-30">-->
-              <!--<div class="flush-right">-->
-                <!--<p>-->
-                  <!--<a href="#"> <img src="../images/edit.svg" height="12px"/> Edit </a>-->
-                  <!--<a href="#"> <img src="../images/delete.svg" height="12px"/> Delete </a>-->
-                <!--</p>-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</div> <div class="clear"></div>-->
 
         <div class="row">&nbsp;</div>
 
